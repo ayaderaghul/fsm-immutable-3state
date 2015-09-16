@@ -23,7 +23,7 @@
 ;; N=100
 (define (evolve population cycles speed mutation rounds-per-match)
   (let* ([N (length population)]
-         [demo (scan-2-types population)]
+         ;;[demo (scan-2-types population)]
          [round-results (match-population population rounds-per-match)]
          [average-payoff (exact->inexact (/ (apply + (flatten round-results))
                                             (* rounds-per-match N)))]
@@ -36,14 +36,15 @@
          [new-population
           (mutate-populations mutation before-mutation)]
          )
-   ;; (set! population-mean
-   ;;       (append population-mean (list average-payoff)))
+    (set! population-mean
+          (append population-mean (list average-payoff)))
     ;;(out-rank cycles population)
-      (set! demographic
-            (append demographic (list demo)))
+    ;;  (set! demographic
+    ;;        (append demographic (list demo)))
     (if (zero? cycles)
         (begin
-          (plot-dynamic demographic N)
-          ;;(out-mean population-mean)
-          population)
+      ;;    (plot-dynamic demographic N)
+          (plot-mean population-mean)
+          population
+          )
         (evolve new-population (sub1 cycles) speed mutation rounds-per-match))))

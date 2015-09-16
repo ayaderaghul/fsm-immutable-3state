@@ -4,7 +4,8 @@
 (provide
  set-immutable
  mutate
- mutate-populations)
+ mutate-populations
+	mutate-random)
 
 (define (set-immutable a-list posn new-value)
   (append
@@ -26,3 +27,12 @@
     (if (zero? countdown)
         population
         (mutate-populations (sub1 countdown) new-population))))
+
+(define (mutate-random countdown population)
+  (let* ([l (length population)]
+         [r (random l)]
+         [mutated (generate-auto)]
+         [new-population (set-immutable population r mutated)])
+    (if (zero? countdown)
+        population
+        (mutate-random (sub1 countdown) new-population))))
